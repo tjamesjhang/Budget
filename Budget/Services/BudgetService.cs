@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Budget.Models;
 using Budget.Repositories;
 
 namespace Budget.Services;
@@ -12,7 +13,7 @@ public class BudgetService(IBudgetRepository budgetRepository)
             return 0;
         }
         
-        var budgetPeriod = GetBudgetPeriod(start, end);
+        var budgetPeriod = new BudgetDateTime(start, end).GetBudgetPeriod();
         var budgets = budgetRepository.GetAll();
         
         return budgets
@@ -27,24 +28,4 @@ public class BudgetService(IBudgetRepository budgetRepository)
                 })
             .Sum(monthAmount => monthAmount);
     }
-
-    public Dictionary<DateTime, int> GetBudgetPeriod(DateTime startDate, DateTime endDate)
-    {
-        var period = new Dictionary<DateTime, int>();
-        var currentMonth = startDate;
-
-        while (currentMonth <= endDate)
-        {
-            var endOfMonth = new DateTime(
-                currentMonth.Year, currentMonth.Month, 
-                DateTime.DaysInMonth(currentMonth.Year, currentMonth.Month));
-            var endOfPeriod = (endOfMonth < endDate) ? endOfMonth : endDate;
-            var daysInMonth = (endOfPeriod - currentMonth).Days + 1;
-            period.Add(currentMonth, daysInMonth);
-            var nextMonth = currentMonth.AddMonths(1);
-            currentMonth = new DateTime(nextMonth.Year, nextMonth.Month, 1); 
-        }
-        return period;
-    }
 }
-

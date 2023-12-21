@@ -122,8 +122,7 @@ public class BudgetControllerTests
 
     private decimal WhenQuery(DateTime start, DateTime end)
     {
-        var actualAmount = _budgetService.Query(start, end);
-        return actualAmount;
+        return _budgetService.Query(start, end);
     }
 
     private void GivenBudgets(List<Models.Budget> budgets)
