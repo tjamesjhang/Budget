@@ -98,6 +98,28 @@ public class BudgetControllerTests
         actualAmount.Should().Be(0);
     }
 
+    [Test]
+    public void lack_of_month()
+    {
+        GivenBudgets(new List<Models.Budget>
+        {
+            new()
+            {
+                YearMonth = "202310",
+                Amount = 31
+            },
+            new()
+            {
+                YearMonth = "202312",
+                Amount = 31000
+            },
+        });
+        var actualAmount = WhenQuery(
+            new DateTime(2023, 10, 10), 
+            new DateTime(2023, 12, 12));
+        actualAmount.Should().Be(22 + 12000);
+    }
+
     private decimal WhenQuery(DateTime start, DateTime end)
     {
         var actualAmount = _budgetService.Query(start, end);
