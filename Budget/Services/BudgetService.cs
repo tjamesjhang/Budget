@@ -23,7 +23,7 @@ public class BudgetService(IBudgetRepository budgetRepository)
                 period => period.Key.ToString("yyyyMM"),
                 (budget, period) =>
                 {
-                    var singleDayAmount = budget.Amount / DateTime.DaysInMonth(period.Key.Year, period.Key.Month);
+                    var singleDayAmount = (decimal) budget.Amount / DateTime.DaysInMonth(period.Key.Year, period.Key.Month);
                     return singleDayAmount * period.Value;
                 })
             .Sum(monthAmount => monthAmount);
