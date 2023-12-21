@@ -37,7 +37,7 @@ public class BudgetControllerTests
     }
     
     [Test]
-    public void g()
+    public void single_month_and_round_to_2nd_digit()
     {
         _budgetRepository.GetAll().Returns(new List<Models.Budget>
             {
