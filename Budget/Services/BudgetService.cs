@@ -7,6 +7,11 @@ public class BudgetService(IBudgetRepository budgetRepository)
 {
     public decimal Query(DateTime start, DateTime end)
     {
+        if (start > end)
+        {
+            return 0;
+        }
+        
         var budgetPeriod = GetBudgetPeriod(start, end);
         var budgets = budgetRepository.GetAll();
         

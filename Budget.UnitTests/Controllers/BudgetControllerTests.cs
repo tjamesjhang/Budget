@@ -2,6 +2,7 @@
 using Budget.Services;
 using FluentAssertions;
 using NSubstitute;
+using NUnit.Framework.Internal;
 
 namespace Budget.UnitTests.Controllers;
 
@@ -78,6 +79,23 @@ public class BudgetControllerTests
             new DateTime(2023, 10, 10), 
             new DateTime(2023, 12, 12));
         actualAmount.Should().Be(22 + 3000 + 12000);
+    }
+
+    [Test]
+    public void illegal_start_end()
+    {
+        GivenBudgets(new List<Models.Budget>
+        {
+            new()
+            {
+                YearMonth = "202312",
+                Amount = 3100
+            }
+        });
+        var actualAmount = WhenQuery(
+            new DateTime(2023, 12, 31),
+            new DateTime(2023, 12, 15)); 
+        actualAmount.Should().Be(0);
     }
 
     private decimal WhenQuery(DateTime start, DateTime end)
