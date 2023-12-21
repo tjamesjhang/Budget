@@ -13,12 +13,12 @@ public class BudgetService(IBudgetRepository budgetRepository)
             return 0;
         }
         
-        var budgetPeriod = new BudgetDateTime(start, end).GetBudgetPeriod();
+        var daysInMonth = new BudgetDateTime(start, end).GetDaysInMonth();
         var budgets = budgetRepository.GetAll();
         
         var originalBudget = budgets
             .Join(
-                budgetPeriod, 
+                daysInMonth, 
                 budget => budget.YearMonth, 
                 period => period.Key.ToString("yyyyMM"),
                 (budget, period) =>

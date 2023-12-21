@@ -5,7 +5,7 @@ public class BudgetDateTime(DateTime start, DateTime end)
     public DateTime Start { get; } = start;
     public DateTime End { get; } = end;
 
-    public Dictionary<DateTime, int> GetBudgetPeriod()
+    public Dictionary<DateTime, int> GetDaysInMonth()
     {
         var period = new Dictionary<DateTime, int>();
         var currentMonth = Start;
