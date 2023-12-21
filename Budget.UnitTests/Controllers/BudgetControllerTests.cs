@@ -22,7 +22,7 @@ public class BudgetControllerTests
     {
         _budgetRepository.GetAll().Returns(new List<Models.Budget>
             {
-                new Models.Budget
+                new()
                 {
                     YearMonth = "202312",
                     Amount = 3100
@@ -38,18 +38,28 @@ public class BudgetControllerTests
     [Test]
     public void partial_month()
     {
-        _budgetRepository.GetAll().Returns(new List<Models.Budget>
+        GivenBudgets(new List<Models.Budget>
+        {
+            new()
             {
-                new Models.Budget
-                {
-                    YearMonth = "202312",
-                    Amount = 3100
-                }
+                YearMonth = "202312",
+                Amount = 3100
             }
-        );
-        var start = new DateTime(2023, 12, 15);
-        var end = new DateTime(2023, 12, 31);
-        var actualAmount = _budgetService.Query(start, end);
+        });
+        var actualAmount = WhenQuery(
+            new DateTime(2023, 12, 15), 
+            new DateTime(2023, 12, 31));
         actualAmount.Should().Be(1700);
+    }
+
+    private decimal WhenQuery(DateTime start, DateTime end)
+    {
+        var actualAmount = _budgetService.Query(start, end);
+        return actualAmount;
+    }
+
+    private void GivenBudgets(List<Models.Budget> budgets)
+    {
+        _budgetRepository.GetAll().Returns(budgets);
     }
 }
