@@ -16,7 +16,7 @@ public class BudgetService(IBudgetRepository budgetRepository)
         var budgetPeriod = new BudgetDateTime(start, end).GetBudgetPeriod();
         var budgets = budgetRepository.GetAll();
         
-        return budgets
+        var originalBudget = budgets
             .Join(
                 budgetPeriod, 
                 budget => budget.YearMonth, 
@@ -27,5 +27,6 @@ public class BudgetService(IBudgetRepository budgetRepository)
                     return singleDayAmount * period.Value;
                 })
             .Sum(monthAmount => monthAmount);
+        return decimal.Round(originalBudget, 2);
     }
 }

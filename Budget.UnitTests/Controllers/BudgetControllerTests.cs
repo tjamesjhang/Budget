@@ -37,6 +37,24 @@ public class BudgetControllerTests
     }
     
     [Test]
+    public void g()
+    {
+        _budgetRepository.GetAll().Returns(new List<Models.Budget>
+            {
+                new()
+                {
+                    YearMonth = "202312",
+                    Amount = 3000
+                }
+            }
+        );
+        var start = new DateTime(2023, 12, 1);
+        var end = new DateTime(2023, 12, 10);
+        var actualAmount = _budgetService.Query(start, end);
+        actualAmount.Should().Be(967.74m);
+    }
+    
+    [Test]
     public void partial_month()
     {
         GivenBudgets(new List<Models.Budget>
