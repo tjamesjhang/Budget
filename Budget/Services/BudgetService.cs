@@ -36,7 +36,8 @@ public class BudgetService(IBudgetRepository budgetRepository)
             var endOfPeriod = (endOfMonth < endDate) ? endOfMonth : endDate;
             var daysInMonth = (endOfPeriod - currentMonth).Days + 1;
             period.Add(currentMonth, daysInMonth);
-            currentMonth = currentMonth.AddMonths(1);
+            var nextMonth = currentMonth.AddMonths(1);
+            currentMonth = new DateTime(nextMonth.Year, nextMonth.Month, 1); 
         }
         return period;
     }

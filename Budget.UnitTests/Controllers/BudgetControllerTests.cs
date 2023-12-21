@@ -52,6 +52,34 @@ public class BudgetControllerTests
         actualAmount.Should().Be(1700);
     }
 
+    [Test]
+    public void cross_three_months()
+    {
+        GivenBudgets(new List<Models.Budget>
+        {
+            new()
+            {
+                YearMonth = "202310",
+                Amount = 31
+            },
+            new()
+            {
+                YearMonth = "202311",
+                Amount = 3000
+            },
+            new()
+            {
+                YearMonth = "202312",
+                Amount = 31000
+            },
+            
+        });
+        var actualAmount = WhenQuery(
+            new DateTime(2023, 10, 10), 
+            new DateTime(2023, 12, 12));
+        actualAmount.Should().Be(22 + 3000 + 12000);
+    }
+
     private decimal WhenQuery(DateTime start, DateTime end)
     {
         var actualAmount = _budgetService.Query(start, end);
